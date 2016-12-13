@@ -43,6 +43,7 @@
 
 -(void)loadBanner {
   if (_adUnitID && _bannerSize) {
+    UIViewController *vc = [UIApplication sharedApplication].delegate.window.rootViewController;
     GADAdSize size = [self getAdSizeFromString:_bannerSize];
     _bannerView = [[GADBannerView alloc] initWithAdSize:size];
     if(!CGRectEqualToRect(self.bounds, _bannerView.bounds)) {
@@ -53,9 +54,10 @@
         });
       }
     }
+    [_bannerView setCenter:CGPointMake(vc.view.bounds.size.width/2, vc.view.bounds.size.height-25)];
     _bannerView.delegate = self;
     _bannerView.adUnitID = _adUnitID;
-    _bannerView.rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+    _bannerView.rootViewController = vc;
     GADRequest *request = [GADRequest request];
     if(_testDeviceID) {
       if([_testDeviceID isEqualToString:@"EMULATOR"]) {
